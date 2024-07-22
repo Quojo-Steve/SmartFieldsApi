@@ -2,7 +2,7 @@ import os
 import psycopg2
 from dotenv import load_dotenv
 from datetime import datetime, timezone
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 
 # Load environment variables
@@ -53,7 +53,7 @@ GET_POST_BY_ID = "SELECT id, title, content, image_url, created_at FROM posts WH
 
 @app.get('/')
 def home():
-    return "Hello world!!!"
+    return "Hello world!"
 
 @app.post('/api/room')
 def create_room():
@@ -171,6 +171,10 @@ def like_post():
             cursor.execute(INSERT_LIKE, (post_id, liked_at))
 
     return {"message": "Post liked"}, 201
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
     app.run(debug=True)
