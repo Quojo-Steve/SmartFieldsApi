@@ -53,7 +53,7 @@ GET_POST_BY_ID = "SELECT id, title, content, image_url, created_at FROM posts WH
 
 @app.get('/')
 def home():
-    return "Hello world"
+    return "Hello world!!!"
 
 @app.post('/api/room')
 def create_room():
