@@ -5,6 +5,7 @@ click==8.1.7
 Flask==2.3.3
 Flask-MySQLdb==2.0.0
 fsspec==2023.9.2
+gunicorn==22.0.0
 huggingface-hub==0.16.4
 idna==3.4
 MarkupSafe==2.1.3

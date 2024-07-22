@@ -73,7 +73,7 @@ def create_room():
             cursor.execute(CREATE_ROOMS_TABLE)
             cursor.execute(INSERT_ROOM_RETURN_ID, (name,))
             room_id = cursor.fetchone()[0]
-    return {"id":room_id, "message": f"Room {name} created"}, 201
+    return {"id": room_id, "message": f"Room {name} created"}, 201
 
 @app.post('/api/temperature')
 def add_temp():
@@ -88,7 +88,7 @@ def add_temp():
     with connection:
         with connection.cursor() as cursor:
             cursor.execute(CREATE_TEMPS_TABLE)
-            cursor.execute(INSERT_TEMP, (room_id,temperature, date))
+            cursor.execute(INSERT_TEMP, (room_id, temperature, date))
 
     return {"message": "Temperature added"}, 201
         
@@ -100,7 +100,7 @@ def get_global_avg():
             average = cursor.fetchone()[0]
             cursor.execute(GLOBAL_NUMBER_OF_DAYS)
             days = cursor.fetchone()[0]
-    return {"average": round(average, 2), "days":days}
+    return {"average": round(average, 2), "days": days}
 
 @app.post('/api/post')
 def create_post():
@@ -170,3 +170,6 @@ def like_post():
             cursor.execute(INSERT_LIKE, (post_id, liked_at))
     
     return {"message": "Post liked"}, 201
+
+if __name__ == '__main__':
+    app.run(debug=True)
