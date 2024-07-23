@@ -3,6 +3,7 @@ import psycopg2
 from dotenv import load_dotenv
 from datetime import datetime, timezone
 from flask import Flask, request, jsonify, send_from_directory
+from flask_swagger_ui import get_swaggerui_blueprint
 from werkzeug.utils import secure_filename
 
 # Load environment variables
@@ -175,6 +176,22 @@ def like_post():
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+### Swagger UI setup ###
+SWAGGER_URL = '/swagger'
+API_URL = '/swagger.json'  # This can also be a URL to an online Swagger specification
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={  # Swagger UI config overrides
+        'app_name': "Flask API"
+    }
+)
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+
+@app.route('/swagger.json')
+def swagger_spec():
+    return send_from_directory(os.getcwd(), 'swagger.yaml')
 
 if __name__ == '__main__':
     app.run(debug=True)

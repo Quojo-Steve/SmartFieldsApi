@@ -1,0 +1,205 @@
+openapi: 3.0.0
+info:
+  title: Flask API
+  version: 1.0.0
+paths:
+  /api/room:
+    post:
+      summary: Create a room
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Room 101
+      responses:
+        "201":
+          description: Room created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  message:
+                    type: string
+
+  /api/temperature:
+    post:
+      summary: Add a temperature reading
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                temperature:
+                  type: number
+                  format: float
+                  example: 22.5
+                room:
+                  type: integer
+                  example: 1
+                date:
+                  type: string
+                  format: date-time
+                  example: "07-23-2024 12:34:56"
+      responses:
+        "201":
+          description: Temperature added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /api/average:
+    get:
+      summary: Get the global average temperature
+      responses:
+        "200":
+          description: Global average temperature and number of days
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  average:
+                    type: number
+                    format: float
+                    example: 22.5
+                  days:
+                    type: integer
+                    example: 7
+
+  /api/post:
+    post:
+      summary: Create a post with an image
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: My Post
+                content:
+                  type: string
+                  example: This is the content of the post
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Post created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  message:
+                    type: string
+                  image_url:
+                    type: string
+
+  /api/posts:
+    get:
+      summary: Get all posts
+      responses:
+        "200":
+          description: A list of posts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        content:
+                          type: string
+                        image_url:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+
+  /api/post/{post_id}:
+    get:
+      summary: Get a specific post by ID
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Post details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  content:
+                    type: string
+                  image_url:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+        "404":
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /api/like:
+    post:
+      summary: Like a post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_id:
+                  type: integer
+                  example: 1
+      responses:
+        "201":
+          description: Post liked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
